@@ -31,7 +31,6 @@
   <a-sky color="#f2f2f2"></a-sky>
 
   <a-assets>
- 
 
     <img id="superman" src="images/superman.jpg">
     <img id="batman" src="images/batman.jpg">
@@ -52,6 +51,15 @@
 
   <a-entity camera position="0 1.6 6" wasd-controls look-controls></a-entity>
 
+  <!-- VR Controllers -->
+  <a-entity laser-controls="hand: left"
+            raycaster="objects: .clickable">
+  </a-entity>
+
+  <a-entity laser-controls="hand: right"
+            raycaster="objects: .clickable">
+  </a-entity>
+
   <a-entity light="type: ambient; intensity: 0.6"></a-entity>
   <a-entity light="type: directional; intensity: 0.8" position="0 5 5"></a-entity>
 
@@ -65,10 +73,8 @@
   <a-plane position="0 2 7" rotation="0 180 0"
          width="14" height="6" color="#FFD6D6"></a-plane>
 
-  
   <a-plane position="0 5 0" rotation="90 0 0"
          width="14" height="14" color="#FFF5F5"></a-plane>
-
 
   <a-text id="infoText"
         value="Click a superhero image"
@@ -79,9 +85,7 @@
         color="#8A3324">
   </a-text>
 
-
-
-  <!-- ALL MODELS NOW SHARE SAME CENTER POSITION -->
+  <!-- MODELS -->
   <a-entity id="superman3D" class="superhero-model"
             gltf-model="#supermanModel"
             position="0 0 2"
@@ -92,7 +96,6 @@
             animation__rotate="property: rotation; dur: 12000; loop: true; to: 0 360 0">
   </a-entity>
 
-
   <a-entity id="batman3D" class="superhero-model"
           gltf-model="#batmanModel"
           position="0 0 2"
@@ -102,17 +105,14 @@
           animation="property: rotation; dur: 25000; loop: true; to: 0 360 0">
 </a-entity>
 
-
 <a-entity id="flash3D" class="superhero-model"
           gltf-model="#flashModel"
           position="0 0 2"
           scale="0.6 0.6 0.6"
           visible="false"
           animation-mixer
-          rotation="0 0 0"
           animation__run="property: position; dir: alternate; dur: 800; loop: true; to: 0 0 1.2">
 </a-entity>
-
 
 <a-entity id="greenlantern3D" class="superhero-model"
           gltf-model="#greenlanternModel"
@@ -143,7 +143,6 @@
           animation="property: rotation; dur: 20000; loop: true; to: 0 360 0">
 </a-entity>
 
-
 <a-entity id="shazam3D" class="superhero-model"
           gltf-model="#shazamModel"
           position="0 0 2"
@@ -153,30 +152,29 @@
           animation="property: position; dir: alternate; dur: 2500; loop: true; to: 0 0.25 2">
 </a-entity>
 
-
-  <!-- IMAGES (UNCHANGED) -->
-  <a-plane src="#superman" position="-3 1.6 -6.95" width="1.8" height="1.8"
+  <!-- CLICKABLE IMAGE PLANES -->
+  <a-plane class="clickable" src="#superman" position="-3 1.6 -6.95" width="1.8" height="1.8"
            show-text-and-model="message: Superman – Man of Steel; model: #superman3D"></a-plane>
 
-  <a-plane src="#batman" position="0 1.6 -6.95" width="1.8" height="1.8"
+  <a-plane class="clickable" src="#batman" position="0 1.6 -6.95" width="1.8" height="1.8"
            show-text-and-model="message: Batman – The Dark Knight; model: #batman3D"></a-plane>
 
-  <a-plane src="#flash" position="3 1.6 -6.95" width="1.8" height="1.8"
+  <a-plane class="clickable" src="#flash" position="3 1.6 -6.95" width="1.8" height="1.8"
            show-text-and-model="message: The Flash – Fastest Man Alive; model: #flash3D"></a-plane>
 
-  <a-plane src="#greenlantern" position="-6.8 1.8 -1.5" rotation="0 90 0"
+  <a-plane class="clickable" src="#greenlantern" position="-6.8 1.8 -1.5" rotation="0 90 0"
            width="1.8" height="1.8"
            show-text-and-model="message: Green Lantern – Power of Will; model: #greenlantern3D"></a-plane>
 
-  <a-plane src="#aquaman" position="-6.8 1.8 1.5" rotation="0 90 0"
+  <a-plane class="clickable" src="#aquaman" position="-6.8 1.8 1.5" rotation="0 90 0"
            width="1.8" height="1.8"
            show-text-and-model="message: Aquaman – King of Atlantis; model: #aquaman3D"></a-plane>
 
-  <a-plane src="#cyborg" position="6.8 1.8 -1.5" rotation="0 -90 0"
+  <a-plane class="clickable" src="#cyborg" position="6.8 1.8 -1.5" rotation="0 -90 0"
            width="1.8" height="1.8"
            show-text-and-model="message: Cyborg – Half Man, Half Machine; model: #cyborg3D"></a-plane>
 
-  <a-plane src="#shazam" position="6.8 1.8 1.5" rotation="0 -90 0"
+  <a-plane class="clickable" src="#shazam" position="6.8 1.8 1.5" rotation="0 -90 0"
            width="1.8" height="1.8"
            show-text-and-model="message: Shazam – Magic of the Gods; model: #shazam3D"></a-plane>
 
