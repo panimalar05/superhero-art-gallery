@@ -50,26 +50,24 @@
   </a-assets>
 
 
+<a-entity id="rig" position="0 0 6" wasd-controls>
 
-    <a-entity id="rig" position="0 0 6" wasd-controls>
-        <a-entity camera look-controls position="0 1.6 -9">
-            <a-cursor></a-cursor>
-        </a-entity>
+    <!-- Camera (Head) -->
+    <a-entity camera look-controls position="0 1.6 -9">
+        <a-cursor></a-cursor>
     </a-entity>
 
+    <!-- Left Controller -->
+    <a-entity laser-controls="hand: left"
+              raycaster="objects: .clickable">
+    </a-entity>
 
+    <!-- Right Controller -->
+    <a-entity laser-controls="hand: right"
+              raycaster="objects: .clickable">
+    </a-entity>
 
-
-
-
-  <!-- VR Controllers -->
-  <a-entity laser-controls="hand: left"
-            raycaster="objects: .clickable">
-  </a-entity>
-
-  <a-entity laser-controls="hand: right"
-            raycaster="objects: .clickable">
-  </a-entity>
+</a-entity>
 
   <a-entity light="type: ambient; intensity: 0.6"></a-entity>
   <a-entity light="type: directional; intensity: 0.8" position="0 5 5"></a-entity>
@@ -192,6 +190,7 @@
 </a-scene>
 </body>
 </html>
+
 
 
 
