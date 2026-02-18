@@ -5,24 +5,59 @@
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
   <script>
-    AFRAME.registerComponent('show-text-and-model', {
-      schema: {
-        message: { type: 'string' },
-        model: { type: 'selector' }
-      },
-      init: function () {
-        this.el.addEventListener('click', () => {
-          document.querySelector('#infoText')
-            .setAttribute('value', this.data.message);
+  AFRAME.registerComponent('show-text-and-model', {
+    schema: {
+      message: { type: 'string' },
+      model: { type: 'selector' }
+    },
+    init: function () {
+      this.el.addEventListener('click', () => {
 
-          document.querySelectorAll('.superhero-model')
-            .forEach(m => m.setAttribute('visible', false));
+        // Update text
+        document.querySelector('#infoText')
+          .setAttribute('value', this.data.message);
 
-          this.data.model.setAttribute('visible', true);
+        // Hide all models
+        document.querySelectorAll('.superhero-model')
+          .forEach(m => m.setAttribute('visible', false));
+
+        // Show selected model
+        this.data.model.setAttribute('visible', true);
+
+        // -------- AUDIO SECTION --------
+
+        const sounds = [
+          'supermanSound',
+          'batmanSound',
+          'flashSound',
+          'greenlanternSound',
+          'aquamanSound',
+          'cyborgSound',
+          'shazamSound'
+        ];
+
+        // Stop all currently playing sounds
+        sounds.forEach(id => {
+          const soundEl = document.querySelector('#' + id);
+          if (soundEl && soundEl.components.sound && soundEl.components.sound.isPlaying) {
+            soundEl.components.sound.stopSound();
+          }
         });
-      }
-    });
-  </script>
+
+        // Play correct sound
+        const modelId = this.data.model.id;
+        const soundId = modelId.replace('3D', 'Sound');
+
+        const soundEl = document.querySelector('#' + soundId);
+        if (soundEl && soundEl.components.sound) {
+          soundEl.components.sound.playSound();
+        }
+
+      });
+    }
+  });
+</script>
+
 </head>
 
 <body>
@@ -47,6 +82,15 @@
     <a-asset-item id="aquamanModel" src="models/aquaman-compressed.glb"></a-asset-item>
     <a-asset-item id="cyborgModel" src="models/cyborg.glb"></a-asset-item>
     <a-asset-item id="shazamModel" src="models/shazam.glb"></a-asset-item>
+
+    <audio id="supermanAudio" src="audios/superman.mp3"></audio>
+    <audio id="batmanAudio" src="audios/batman.mp3"></audio>
+    <audio id="flashAudio" src="audios/flash.mp3"></audio>
+    <audio id="greenlanternAudio" src="audios/green_lantern.mp3"></audio>
+    <audio id="aquamanAudio" src="audios/aquaman.mp3"></audio>
+    <audio id="cyborgAudio" src="audios/cyborg.mp3"></audio>
+    <audio id="shazamAudio" src="audios/shazam.mp3"></audio>
+
   </a-assets>
 
 
@@ -160,6 +204,16 @@
           animation="property: position; dir: alternate; dur: 2500; loop: true; to: 0 0.25 2">
 </a-entity>
 
+  <!--AUDIO-->
+  <a-entity id="supermanSound" sound="src: #supermanAudio"></a-entity>
+  <a-entity id="batmanSound" sound="src: #batmanAudio"></a-entity>
+  <a-entity id="flashSound" sound="src: #flashAudio"></a-entity>
+  <a-entity id="greenlanternSound" sound="src: #greenlanternAudio"></a-entity>
+  <a-entity id="aquamanSound" sound="src: #aquamanAudio"></a-entity>
+  <a-entity id="cyborgSound" sound="src: #cyborgAudio"></a-entity>
+  <a-entity id="shazamSound" sound="src: #shazamAudio"></a-entity>
+
+
   <!-- CLICKABLE IMAGE PLANES -->
   <a-plane class="clickable" src="#superman" position="-3 1.6 -6.95" width="1.8" height="1.8"
            show-text-and-model="message: Superman – Man of Steel; model: #superman3D"></a-plane>
@@ -189,10 +243,3 @@
 </a-scene>
 </body>
 </html>
-
-
-
-
-
-
-
