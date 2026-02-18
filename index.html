@@ -4,8 +4,10 @@
   <title>VR Superhero Gallery</title>
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
-  <script>
+<script>
 
+  // SHOW TEXT + MODEL + AUDIO COMPONENT
+ 
   AFRAME.registerComponent('show-text-and-model', {
     schema: {
       message: { type: 'string' },
@@ -15,18 +17,16 @@
     init: function () {
       this.el.addEventListener('click', () => {
 
-        // Update text
         document.querySelector('#infoText')
           .setAttribute('value', this.data.message);
 
-        // Hide all models
         document.querySelectorAll('.superhero-model')
           .forEach(m => m.setAttribute('visible', false));
 
-        // Show selected model
-        this.data.model.setAttribute('visible', true);
+        if (this.data.model) {
+          this.data.model.setAttribute('visible', true);
+        }
 
-        // -------- AUDIO SECTION --------
         const sounds = [
           'supermanSound',
           'batmanSound',
@@ -37,52 +37,54 @@
           'shazamSound'
         ];
 
-        // Stop all sounds
         sounds.forEach(id => {
           const soundEl = document.querySelector('#' + id);
-          if (soundEl && soundEl.components.sound && soundEl.components.sound.isPlaying) {
+          if (soundEl &&
+              soundEl.components.sound &&
+              soundEl.components.sound.isPlaying) {
             soundEl.components.sound.stopSound();
           }
         });
 
-        // Play correct sound
-        const modelId = this.data.model.id;
-        const soundId = modelId.replace('3D', 'Sound');
+        if (this.data.model) {
+          const modelId = this.data.model.id;
+          const soundId = modelId.replace('3D', 'Sound');
+          const soundEl = document.querySelector('#' + soundId);
 
-        const soundEl = document.querySelector('#' + soundId);
-        if (soundEl && soundEl.components.sound) {
-          soundEl.components.sound.playSound();
+          if (soundEl && soundEl.components.sound) {
+            soundEl.components.sound.playSound();
+          }
         }
       });
     }
   });
 
-  AFRAME.registerComponent('thumbstick-rotate', {
-    schema: {
-      speed: { type: 'number', default: 2 }
-    },
+
+  // THUMBSTICK ROTATION (BOTH CONTROLLERS)
+
+  AFRAME.registerComponent('thumbstick-turn', {
+    schema: { speed: { type: 'number', default: 2 } },
 
     init: function () {
       this.el.addEventListener('thumbstickmoved', (evt) => {
 
-        const x = evt.detail.x; // left/right thumbstick movement
+        const x = evt.detail.x;
 
-        // small deadzone to prevent drift
         if (Math.abs(x) > 0.2) {
 
-          const cameraRig = document.querySelector('#cameraRig');
-          if (!cameraRig) return;
+          const rig = document.querySelector('#rig');
+          if (!rig) return;
 
-          const rotation = cameraRig.getAttribute('rotation');
+          const rotation = rig.getAttribute('rotation');
           rotation.y -= x * this.data.speed;
 
-          cameraRig.setAttribute('rotation', rotation);
+          rig.setAttribute('rotation', rotation);
         }
       });
     }
   });
-</script>
 
+</script>
 
 </head>
 
@@ -109,13 +111,13 @@
     <a-asset-item id="cyborgModel" src="models/cyborg.glb"></a-asset-item>
     <a-asset-item id="shazamModel" src="models/shazam.glb"></a-asset-item>
 
-    <audio id="supermanAudio" src="superman.mp3"></audio>
-    <audio id="batmanAudio" src="batman.mp3"></audio>
-    <audio id="flashAudio" src="flash.mp3"></audio>
-    <audio id="greenlanternAudio" src="green_lantern.mp3"></audio>
-    <audio id="aquamanAudio" src="aquaman.mp3"></audio>
-    <audio id="cyborgAudio" src="cyborg.mp3"></audio>
-    <audio id="shazamAudio" src="shazam.mp3"></audio>
+    <audio id="supermanAudio" src="audios/superman.mp3"></audio>
+    <audio id="batmanAudio" src="audios/batman.mp3"></audio>
+    <audio id="flashAudio" src="audios/flash.mp3"></audio>
+    <audio id="greenlanternAudio" src="audios/green_lantern.mp3"></audio>
+    <audio id="aquamanAudio" src="audios/aquaman.mp3"></audio>
+    <audio id="cyborgAudio" src="audios/cyborg.mp3"></audio>
+    <audio id="shazamAudio" src="audios/shazam.mp3"></audio>
 
   </a-assets>
 
@@ -133,18 +135,18 @@
     <!-- LEFT CONTROLLER -->
     <a-entity laser-controls="hand: left"
               position="-0.3 1.4 -0.5"
-              raycaster="objects: .clickable">
+              raycaster="objects: .clickable"
+              thumbstick-turn>
     </a-entity>
 
-    <!-- RIGHT CONTROLLER (THUMBSTICK ROTATION ENABLED) -->
+    <!-- RIGHT CONTROLLER -->
     <a-entity laser-controls="hand: right"
               position="0.3 1.4 -0.5"
               raycaster="objects: .clickable"
-              thumbstick-controls="turnSpeed: 45">
+              thumbstick-turn>
     </a-entity>
 
 </a-entity>
-
 
 
   <a-entity light="type: ambient; intensity: 0.6"></a-entity>
@@ -277,5 +279,4 @@
 
 </a-scene>
 </body>
-
 </html>
