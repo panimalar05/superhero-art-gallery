@@ -83,20 +83,24 @@
     <a-asset-item id="cyborgModel" src="models/cyborg.glb"></a-asset-item>
     <a-asset-item id="shazamModel" src="models/shazam.glb"></a-asset-item>
 
-    <audio id="supermanAudio" src="superman.mp3"></audio>
-    <audio id="batmanAudio" src="batman.mp3"></audio>
-    <audio id="flashAudio" src="flash.mp3"></audio>
-    <audio id="greenlanternAudio" src="green_lantern.mp3"></audio>
-    <audio id="aquamanAudio" src="aquaman.mp3"></audio>
-    <audio id="cyborgAudio" src="cyborg.mp3"></audio>
-    <audio id="shazamAudio" src="shazam.mp3"></audio>
+    <audio id="supermanAudio" src="audios/superman.mp3"></audio>
+    <audio id="batmanAudio" src="audios/batman.mp3"></audio>
+    <audio id="flashAudio" src="audios/flash.mp3"></audio>
+    <audio id="greenlanternAudio" src="audios/green_lantern.mp3"></audio>
+    <audio id="aquamanAudio" src="audios/aquaman.mp3"></audio>
+    <audio id="cyborgAudio" src="audios/cyborg.mp3"></audio>
+    <audio id="shazamAudio" src="audios/shazam.mp3"></audio>
 
   </a-assets>
 
 
-<a-entity id="rig" position="0 0 3" wasd-controls>
+<a-entity id="rig"
+          position="0 0 3"
+          wasd-controls
+          thumbstick-controls="turnSpeed: 45">
 
     <a-entity camera look-controls position="0 1.6 0"></a-entity>
+    
 
     <a-entity laser-controls="hand: left"
               position="-0.3 1.4 -0.5"
@@ -242,5 +246,4 @@
 
 </a-scene>
 </body>
-
 </html>
