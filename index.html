@@ -5,11 +5,13 @@
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
   <script>
+
   AFRAME.registerComponent('show-text-and-model', {
     schema: {
       message: { type: 'string' },
       model: { type: 'selector' }
     },
+
     init: function () {
       this.el.addEventListener('click', () => {
 
@@ -25,7 +27,6 @@
         this.data.model.setAttribute('visible', true);
 
         // -------- AUDIO SECTION --------
-
         const sounds = [
           'supermanSound',
           'batmanSound',
@@ -36,7 +37,7 @@
           'shazamSound'
         ];
 
-        // Stop all currently playing sounds
+        // Stop all sounds
         sounds.forEach(id => {
           const soundEl = document.querySelector('#' + id);
           if (soundEl && soundEl.components.sound && soundEl.components.sound.isPlaying) {
@@ -52,11 +53,36 @@
         if (soundEl && soundEl.components.sound) {
           soundEl.components.sound.playSound();
         }
+      });
+    }
+  });
 
+  AFRAME.registerComponent('thumbstick-rotate', {
+    schema: {
+      speed: { type: 'number', default: 2 }
+    },
+
+    init: function () {
+      this.el.addEventListener('thumbstickmoved', (evt) => {
+
+        const x = evt.detail.x; // left/right thumbstick movement
+
+        // small deadzone to prevent drift
+        if (Math.abs(x) > 0.2) {
+
+          const cameraRig = document.querySelector('#cameraRig');
+          if (!cameraRig) return;
+
+          const rotation = cameraRig.getAttribute('rotation');
+          rotation.y -= x * this.data.speed;
+
+          cameraRig.setAttribute('rotation', rotation);
+        }
       });
     }
   });
 </script>
+
 
 </head>
 
@@ -96,20 +122,25 @@
 
 <a-entity id="rig"
           position="0 0 3"
-          wasd-controls
-          thumbstick-controls="turnSpeed: 45">
+          wasd-controls>
 
-    <a-entity camera look-controls position="0 1.6 0"></a-entity>
-    
+    <!-- CAMERA -->
+    <a-entity camera
+              look-controls
+              position="0 1.6 0">
+    </a-entity>
 
+    <!-- LEFT CONTROLLER -->
     <a-entity laser-controls="hand: left"
               position="-0.3 1.4 -0.5"
               raycaster="objects: .clickable">
     </a-entity>
 
+    <!-- RIGHT CONTROLLER (THUMBSTICK ROTATION ENABLED) -->
     <a-entity laser-controls="hand: right"
               position="0.3 1.4 -0.5"
-              raycaster="objects: .clickable">
+              raycaster="objects: .clickable"
+              thumbstick-controls="turnSpeed: 45">
     </a-entity>
 
 </a-entity>
